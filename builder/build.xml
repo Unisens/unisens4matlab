@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project name="unisens toolbox for matlab" basedir="." default="all">
+	<property file="build.properties" /> 
+	<property file="login.properties" /> 
+
+	<!-- path to the svnant libraries. They are located in builder/lib -->
+	<path id="svnant.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- load the svn task -->
+  <typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" />
+  <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task" classpathref="svnant.classpath"/>
+
+
+  <!--all -->
+  <target name="all" depends="clean, makeDirs, checkout, revision, updateFiles, packageRelease, ftpTransfer, releaseInstaller" /> 
+
+
+  <!-- clean dirs -->
+  <target name="clean" >
+    <delete dir="checkout" />
+  </target>           
+
+  
+  <!-- make dirs -->
+  <target name="makeDirs" >
+    <mkdir dir="dist" />
+    <mkdir dir="checkout" />
+  </target>
+  
+  <!-- checkout from svn -->
+  <target name="checkout">
+  	<svn username="${svn.repository.user}" password="${svn.repository.passwd}"  javahl="false">
+      <checkout url="${svn.unisens.url}" revision="HEAD" destPath="checkout" />
+	  <delete dir="checkout/builder" />
+    </svn>
+  </target>
+	
+	<!-- create filename and update version and build number in about box -->
+	<target name="revision">
+		<!-- Es wird immer die maximale Revisionsnummer der library genommen! -->
+		<svn username="${svn.repository.user}" password="${svn.repository.passwd}" javahl="false">
+			<wcVersion path="checkout" prefix="" />
+		</svn>
+		
+		<echo>Current revision is ${revision.max}</echo>
+		<tstamp><format property="timestamp" pattern="dd.MM.yyyy HH:MM z"/></tstamp>
+		
+		<property name="release.date" value="${timestamp}" />
+		<property name="release.filename" value="unisenstoolbox_rev${revision.max}" />
+	</target>
+  
+
+  <!--copy additional distfiles and documentation to dist dir -->
+  <target name="copyDistFiles" >
+    <copy todir="dist/${release.name}" >
+      <fileset dir="checkout/distfiles" />
+    </copy>
+    <copy file="checkout/doc/Unisens-Dokumentation.pdf" todir="dist/${release.name}/doc" />
+  </target>
+
+
+  <!-- update files -->
+  <target name="updateFiles">
+    <replace file="checkout/unisens_install.m" token="ANT_TOOLBOX" value="${release.filename}.zip"/>
+    <replace file="checkout/unisens_install.m" token="ANT_URL" value="http://unisens.org${ftp.zip.remote.dir}"/>
+    <replace file="checkout/unisens/unisens_version.m" token="ANT_TOOLBOX" value="${release.filename}.zip"/>
+    <replace file="checkout/unisens/unisens_version.m" token="ANT_REVISION" value="${revision.max}"/>
+    <replace file="checkout/unisens/Contents.m" token="ANT_REVISION" value="${revision.max}"/>
+  </target>
+
+
+  <!-- make zip from dist -->
+  <target name="packageRelease">
+    <zip destfile="dist/${release.filename}.zip" basedir="checkout" includes="unisens/*">
+	  <zipfileset dir="checkout/unisens/img" prefix="unisens/img"/>
+	  <zipfileset dir="checkout/unisens/lib" prefix="unisens/lib"/>
+    </zip>
+  </target>
+
+  
+  <!-- upload zip file to unisens.org -->
+  <target name="ftpTransfer">
+    <ftp server="${ftp.unisens.url}"
+	    remotedir="${ftp.zip.remote.dir}"
+		passive="yes"
+		depends="yes"
+        userid="${ftp.user}"
+        password="${ftp.passwd}">
+      <fileset dir="dist">
+	    <include name="unisenstoolbox_rev*.zip"/>
+	  </fileset>
+    </ftp>
+  </target>
+  
+  
+  <!-- upload installer -->
+  <target name="releaseInstaller">
+    <ftp server="${ftp.unisens.url}"
+	    remotedir="${ftp.zip.remote.dir}"
+		passive="yes"
+		depends="yes"
+        userid="${ftp.user}"
+        password="${ftp.passwd}">
+      <fileset dir="checkout/">
+	    <include name="unisens_install.m"/>
+	  </fileset>
+    </ftp>
+  </target>
+	  
+</project>

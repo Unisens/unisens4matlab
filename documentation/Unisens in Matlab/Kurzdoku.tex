@@ -1,0 +1,64 @@
+\documentclass{unisens}
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{tabularx, varioref, mit_bib}
+
+
+\newcommand{\xmlattribute}[1]{\texttt{#1}}
+\setcounter{secnumdepth}{0}
+
+\title{Unisens und Matlab}
+\subject{Installationsanleitung}
+\author{Malte Kirst}
+
+\begin{document}
+\maketitle
+
+	\section{Voraussetzungen}
+
+Folgende Punkte sind Voraussetzung für die Integration von Unisens 2.0 in Matlab:
+\begin{itemize}
+	\item Matlab 7.1 oder höher ist installiert
+	\item Java JRE 1.5.0 oder höher wird verwendet
+	\item org.unisens.jar ist vorhanden
+	\item org.unisens.ri.jar ist vorhanden
+\end{itemize}
+
+Die Dateien org.unisens.jar (Interface) und org.unisens.ri.jar (Referenzimplementierung) und einige Beispieldaten
+finden sich  im Paket \texttt{unisens4matlab} im Downloadbereich auf der Unisens-Webseite \url{http://www.unisens.org}.
+
+
+	\section{Installation}
+
+		\subsection{Java}
+
+Die verwendete Matlab-Version muss das Java JRE 1.5.0 oder höher verwenden. Überprüfbar ist dies im Pfad \code{\$matlabroot\textbackslash sys\textbackslash java\textbackslash jre\textbackslash win32\textbackslash } 
+oder durch den Befehl \code{version -java} im Matlab-Command-Window.
+
+Sollte eine niedrigere Java-Version installiert sein, kann Unisens nicht verwendet werden. Steht keine Matlab-Version zur Verfügung, die Java JRE 1.5.0 oder höher verwendet, kann das vorhandene Matlab auch mit einer anderen JRE gestartet werden. Dafür muss die JRE 1.5.0 oder höher von \url{http://www.java.com/de/download/} herunter geladen und installiert werden. Anschließend kann Matlab mit der neuen JRE gestartet werden (Matlab-Dokumentation). Es kann jedoch vorkommen, dass einzelne Funktionen innerhalb von Matlab mit einer anderen JRE nicht funktionieren.
+
+
+		\subsection{Matlab}
+
+Die JAR-Dateien \texttt{org.unisens.jar} und \texttt{org.unisens.ri.jar} müssen in Matlab eingebunden werden. Dieses kann statisch oder dynamisch erfolgen. Um die JAR-Dateien statisch (dauerhaft) hinzuzufügen, muss die Datei \texttt{classpath.txt} mit dem Befehl \code{edit classpath.txt} im Command-Window geöffnet werden. Anschließendem wird der  vollständige Pfad zu den beiden JAR-Datei am Ende der Datei eingefügt und die Datei gespeichert. Sollte das Speichern fehlschlagen, sind die Dateirechte zu überprüfen. Ab dem nächsten Neustart von Matlab sind diese Änderungen dauerhaft gespeichert. 
+
+Alternativ können beide JAR-Dateien dynamisch durch Eingabe von \code{javaaddpath(\textsl{PFAD})} im Command-Window eingebunden werden, wobei \code{\textsl{PFAD}} der vollständige Pfad zur jeweiligen JAR-Datei ist. Bei einem Matlab-Neustart gehen dynamische Änderungen verloren.
+
+Wenn der Befahl \code{javaclasspath} die JAR-Dateien auflistet, war das Einbinden erfolgreich.
+
+
+
+	\section{Test}
+
+Um den Test durchführen zu können, müssen sich die M-Dateien aus diesem Paket im aktuellen Verzeichnis oder in einem von Matlab durchsuchten Verzeichnis befinden. Der Befehl \code{publish unisens\_example} generiert ein ausführliches Beispiel. Um Informationen zu einer Unisens-Datei anzuzeigen, wird der Befehl \code{unisens\_get\_entry\_info} verwenden. Weitere Testdateien befinden sich auf der Unisens-Webseite \url{http://www.unisens.org}.
+
+\code{unisens\_get\_data} liest Daten aus einem SignalEntry, \code{unisens\_plot} plottet die ersten 20 Sekunden aller SignalEntries in eine Grafik. 
+
+
+	\section{Dokumentation}
+
+Die Matlab-Unisens-Funktionen sind alle dokumentiert, mit dem Kommando \code{help \textsl{BEFEHL}} wird die Hilfe angezeigt. Alle Java-Methoden können auch direkt von Matlab aus aufgerufen werden. Die Dokumentation der Java-API befindet sich auf \url{http://www.unisens.org}.
+
+\end{document}

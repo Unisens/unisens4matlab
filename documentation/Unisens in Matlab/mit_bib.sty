@@ -1,0 +1,16 @@
+%%  mit_bib.sty von Malte Kirst
+%%  (c) FZI Karlsruhe, 2004-03-17
+%%
+%%  Change log
+%%	2008-07-02	
+\RequirePackage{url}
+\newcommand{\urldate}[1]{{\hyphenchar\font=-1 #1}}
+\newcommand{\urlmail}[1]{\texttt{\hyphenchar\font=64 #1}}
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leostyle}
+
+%%
+%%  End of file mit_bib.sty
