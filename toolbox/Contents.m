@@ -19,6 +19,7 @@
 %   unisens_get_samplerate                  - Get sample rate.
 %	unisens_get_measurementid				- Measrument ID of this measurement.
 %	unisens_get_timestampstart				- TimestampStart of this measurement.
+%	unisens_get_custom_attribute			- Gets custom attribute value.
 %   unisens_utility_bin_read                - Fast reader for binary files.
 %	unisens_utility_csv_read				- Reads an EventEntry from a CSV file.
 %
