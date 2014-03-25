@@ -12,7 +12,7 @@ function rs = unisens_get_custom_attribute(unisensPath, key)
 %   This function will return an empty array if no matchin key is found.
 
 %   Copyright 2014      Karlsruhe Institute of Technology
-%                       Malte Kirst (malte.kirst@kit.de)
+%                       Malte Kirst (malte.kirst@kit.edu)
 
 % Open the unisens data set and read the custom attributes
 unisensPath = unisens_utility_path(unisensPath);
