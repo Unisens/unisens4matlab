@@ -20,10 +20,12 @@ function [rs, j_entry] = unisens_get_data(path, entry, range)
 %   [DATA, J_ENTRY] = UNISENS_GET_DATA(...), the Java object J_ENTRY 
 %   contains all entry information.
 
-%   Copyright 2007-2010 FZI Forschungszentrum Informatik Karlsruhe,
+%   Copyright 2007-2011 FZI Forschungszentrum Informatik Karlsruhe,
 %                       Embedded Systems and Sensors Engineering
 %                       Malte Kirst (kirst@fzi.de)
 %                       Julius Neuffer (neuffer@fzi.de)
+%   Copyright 2014      Karlsruhe Institute of Technology
+%                       Malte Kirst (malte.kirst@kit.edu)
 
 %   Change Log         
 %   2007-12-06  file established for Unisens 2.0, rev409   
@@ -40,6 +42,7 @@ function [rs, j_entry] = unisens_get_data(path, entry, range)
 %   2010-04-21  new prompt text, new help text, 2nd return value (j_entry)
 %               and RANGE as 3rd parameter
 %   2011-02-25  unisens_utility_csv_read established
+%   2014-10-08  added missing closedAll() method at the end
 
 if (nargin >= 1 && ~isempty(path))
     path = unisens_utility_path(path);
@@ -141,4 +144,5 @@ if (isjava(rs))
     end
 end
 
-
+% Close the data set
+j_unisens.closeAll();
