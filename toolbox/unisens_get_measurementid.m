@@ -1,4 +1,4 @@
-function id = unisens_get_measurementid(path)
+function id = unisens_get_measurementid(unisensPath)
 %UNISENS_GET_MEASUREMENTID Measrument ID of this measurement.
 %   ID = UNISENS_GET_MEASUREMENTID()
 %   ID = UNISENS_GET_TIMESTAMPSTART(PATH) returns the measurement ID of
@@ -10,18 +10,19 @@ function id = unisens_get_measurementid(path)
 
 %   Change Log         
 %   2011-02-25  file established for Unisens 2.0, rev721
+%   2014-03-26  cast result from Java string object to char
 
 
 if (nargin >= 1)
-    path = unisens_utility_path(path);
+    unisensPath = unisens_utility_path(unisensPath);
 else
-    path = unisens_utility_path();
+    unisensPath = unisens_utility_path();
 end
 
 j_unisensFactory = org.unisens.UnisensFactoryBuilder.createFactory();
-j_unisens = j_unisensFactory.createUnisens(path);
+j_unisens = j_unisensFactory.createUnisens(unisensPath);
 
-id = j_unisens.getMeasurementId();
+id = char(j_unisens.getMeasurementId());
 
 if (nargout == 0)
     disp(['Measurement ID: ', char(id)]);

@@ -9,12 +9,14 @@ function unisens_install()
 %                       Embedded Systems and Sensors Engineering
 %                       Malte Kirst (kirst@fzi.de)
 %                       Joerg Ottenbacher (joerg.ottenbacher@kit.edu)
+%   Copyright 2014      Karlsruhe Institute of Technology
+%                       Malte Kirst (malte.kirst@kit.edu)
 
 %   Change Log         
 %   2010-04-23  file established 
 %   2010-04-28  toolboxdir-bug fixed
 %   2010-05-21  better handling of classpath.txt
-
+%   2014-10-09  added support for Java 1.7
 
 TOOLBOX = 'ANT_TOOLBOX';
 URL = 'ANT_URL';
@@ -43,8 +45,8 @@ end
 %  Check Java version
 disp('Checking Java version...');
 javaVersion = version('-java');
-if (~length(strfind(javaVersion, 'Java 1.6')))
-    error([javaVersion, ' is installed. Unisens needs Java version 1.6.']);
+if (isempty(strfind(javaVersion, 'Java 1.6'))  &&  isempty(strfind(javaVersion, 'Java 1.7')))
+    error([javaVersion, ' is installed. Unisens needs Java version 1.6 or 1.7.']);
 else
     disp([javaVersion, ' is installed.']);
     disp(' ');
