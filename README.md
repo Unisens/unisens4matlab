@@ -6,5 +6,24 @@ Unisens is a **universal data format for multi sensor data**. It was developed a
 
 For more information please check the [Unisens website](http://www.unisens.org).
 
+## Simple example
+```matlab
+path = 'C:\data\2014-06-20 14.01.19'; % Sample data path, where the unisens.xml file is located
+jUnisensFactory = org.unisens.UnisensFactoryBuilder.createFactory();
+jUnisens = jUnisensFactory.createUnisens(path);
+
+% Read a binary file
+accEntry = jUnisens.getEntry('acc.bin');
+accData = accEntry.readScaled(accEntry.getCount()); % In accData will be the values of acc.bin
+
+% Read a values list
+hrvEntry = jUnisens.getEntry('HrvRmssd.csv');
+hrvValueList = hrvEntry.readValuesList(hrvEntry.getCount());
+hrvTimeStamps = hrvValueList.getSamplestamps();
+hrvData = hrvValueList.getData();
+
+jUnisens.closeAll();
+```
+
 If Unisens meets your requirements, feel free to try it. unisens4matlab is licenced under
 the <acronym title="GNU Lesser General Public Licence">LGPL</acronym> and it may be downloaded [in the download section](http://www.unisens.org/downloads.php).
