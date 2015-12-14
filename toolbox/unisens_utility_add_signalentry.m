@@ -83,7 +83,7 @@ if (~isempty(unisens.data))
     if (strcmpi(unisens.fileFormat, 'bin'))
         %j_entry.append(unisens.data);
         % Do not use the Java method append() due to performance reasons (speed, memory)    
-        h = fopen([path '\' entryId], 'a');
+        h = fopen([path filesep entryId], 'a');
         fwrite(h, unisens.data, lower(char(unisens.dataType)));
         fclose(h);
 
@@ -105,7 +105,7 @@ if (~isempty(unisens.data))
         j_fileFormat.setDecimalSeparator(unisens.decimalSeparator);
         j_entry.setFileFormat(j_fileFormat);
         % Do not use the Java method append() due to performance reasons (speed, memory)    
-        dlmwrite([path '\' entryId], unisens.data, unisens.separator);
+        dlmwrite([path filesep entryId], unisens.data, unisens.separator);
     
     % Write XML data
     elseif (strcmpi(unisens.fileFormat, 'xml'));
